@@ -1,8 +1,10 @@
 from query import query
 from TreeNode import TreeNode
+from Solution import Solution
 
 class TaskTree:
     def __init__(self, outcome=None):
+        self.morphemes = set()
         if outcome is None:
             self.intro()
             gen = self.build_from(self.head)
@@ -11,9 +13,8 @@ class TaskTree:
             except StopIteration:
                 print('Exiting ... ')
                 print()
-
         else:
-            self.head = TreeNode(value=outcome)
+            self.head = outcome
 
     def intro(self):
         print("Let's create a new interaction.")
@@ -52,7 +53,18 @@ class TaskTree:
         except StopIteration:
             return
 
-    def print(self):
+    def preorder(self):
+        def _iter_(node):
+            if node is None:
+                return
+            else:
+                yield node.value
+                yield from _iter_(node.down)
+                yield from _iter_(node.right)
+
+        yield from _iter_(self.head)
+
+    def inorder(self):
         def _iter_(node):
             if node is None:
                 return
@@ -61,10 +73,28 @@ class TaskTree:
                 yield node.value
                 yield from _iter_(node.right)
 
-        for val in _iter_(self.head):
-            print(val)
+        yield from _iter_(self.head)
+
+    def print(self):
+        print(f'Preorder: {[a for a in self.preorder()]}')
+        print(f'Inorder: {[a for a in self.inorder()]}')
+
+    # ---- future ---- #
+    def index_from(self, TreeIO):
+        candidates = [a for a in self.inorder()]
+        candidates = set(candidates)
+        new = [candidates in TreeIO.morphemes]
+        self.morphemes.add(new)
 
 
 if __name__ == '__main__':
-    a = TaskTree()
-    a.print()
+    #a = TaskTree()
+    pre_o = ['id', 'doc', 'pid', 'bc', 'ssn', 'pr', 'dmv']
+    in_o = ['bc', 'ssn', 'pid', 'pr', 'doc', 'dmv', 'id']
+
+    test = Solution()
+    res = test.buildTree(pre_o, in_o)
+
+    t_tree = TaskTree(res)
+    t_tree.print()
+
