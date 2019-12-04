@@ -25,9 +25,10 @@ def file2nodes(filename):
 def file2trees(filename):
     trees = []
     with open(filename, 'rt') as f:
-        while f:
-            preo = next(f).strip('pre: ').split(',')
-            ino = next(f).strip('in: ').split(',')
+        while True:
+            preo = f.readline()
+            ino = f.readline()
+            if not ino: break
             trees.append((preo, ino))
     return trees
 
