@@ -38,21 +38,3 @@ class TreeIO:
     def printall(self):
         for key,val in self.dict.items():
             print(f'{key}:  {val}')
-
-    # ---- future ---- #
-    def search(self, raw_term):
-        matches = []
-        # term = morphemes(raw_term)
-        for tree in self.dict.values():
-            # match = intersection(tree.morphemes, term)
-            # if len(match) > 0:
-            #    matches.append((tree, len(match)))
-            ...
-
-
-if __name__ == '__main__':
-    a = TreeIO()
-    a.read('test.txt')
-    a.printall()
-    a.write('test2.txt')
-
